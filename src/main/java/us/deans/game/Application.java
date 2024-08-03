@@ -1,48 +1,51 @@
 package us.deans.game;
 
+import us.deans.game.base.BasicBuilder;
 import us.deans.game.base.SequenceGenerator;
-import us.deans.game.base.SynSequenceGenerator;
-import us.deans.game.factories.NodeFactory;
-import us.deans.game.factories.PipeFactory;
-import us.deans.game.housing.BasicNode;
-import us.deans.game.housing.BasicPipe;
+import us.deans.game.v2.Registry;
+import us.deans.game.v2.buffers.Buffer;
+import us.deans.game.v2.engines.Engine;
 
-/**
- * Hello world!
- *
- */
+import static us.deans.game.v2.Registry.bufferList;
+import static us.deans.game.v2.Registry.engineList;
+
 public class Application
 {
 
+    public static Registry gameRegistry;
     public static SequenceGenerator nodeSeq = null;
     public static SequenceGenerator bufferSeq = null;
     public static SequenceGenerator pipeSeq = null;
     public static SequenceGenerator portSeq = null;
 
     public static void main( String[] args ) throws FlowException {
-        System.out.println( "Hello World!" );
+        System.out.println("Starting Game...");
 
-        nodeSeq = new SynSequenceGenerator();
-        bufferSeq = new SynSequenceGenerator();
-        pipeSeq = new SynSequenceGenerator();
-        portSeq = new SynSequenceGenerator();
+        gameRegistry = new Registry();
+        BasicBuilder builder = new BasicBuilder();
 
-        PipeFactory pipeFactory = new PipeFactory();
-        BasicPipe pipe1 = pipeFactory.getBasicPipe(1);
-        BasicPipe pipe2 = pipeFactory.getBasicPipe(1);
-        BasicPipe pipe3 = pipeFactory.getBasicPipe(2);
+        Buffer buffer1 = builder.buildBuffer("reserve", "none", "crude-1", 88.0, 88.0);
 
-        NodeFactory nodeFactory = new NodeFactory();
+        System.out.println("Initial Map...");
+        System.out.println(buffer1.toString());
 
-        int[][] spec1 = {{10,0},{10,10}};
-        int[][] spec2 = {{10,10},{10,0}};
-        try {
-            BasicNode node1 = nodeFactory.getBasicNode(spec1);
-            BasicNode node2 = nodeFactory.getBasicNode(spec2);
-        } catch (FlowException e) {
-            throw new RuntimeException(e);
+        Buffer buffer2 = builder.buildBuffer("storage", "player1", "crude-1", 6.0, 0.0);
+        Engine engine3 = builder.buildEngine("drill", "player1", "crude-1", 0, 0, 2.8);
+
+        System.out.println(buffer2.toString());
+        System.out.println(engine3.toString());
+
+        System.out.println("Assets...");
+
+        System.out.println("buffers...");
+        for (Buffer b : bufferList) {
+            System.out.println(b.toString());
         }
 
+        System.out.println("engines...");
+        for (Engine e : engineList) {
+            System.out.println(e.toString());
+        }
 
     }
 }
